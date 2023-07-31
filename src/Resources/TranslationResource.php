@@ -79,15 +79,20 @@ class TranslationResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('key')
                     ->label(trans('filament-translations::translation.key'))
-                    ->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('text')->label(trans('filament-translations::translation.text')),
+                    ->sortable()
+                      ->copyable(true)
+                      ->searchable(),
+                Tables\Columns\TextInputColumn::make('text.en')->label('Англ'),
+                Tables\Columns\TextInputColumn::make('text.ru')->label('Рус'),
+                //Tables\Columns\TextColumn::make('text')->label(trans('filament-translations::translation.text')),
                 Tables\Columns\TextColumn::make('created_at')->label(trans('filament-translations::global.created_at'))
                     ->dateTime()->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')->label(trans('filament-translations::global.updated_at'))
                     ->dateTime()->toggleable(),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('no_eng')->label('Нет английского')->query(fn(\Illuminate\Database\Eloquent\Builder $query) => $query->whereNull('text->en')),
+                Tables\Filters\Filter::make('no_rus')->label('Нет русского перевода')->query(fn(\Illuminate\Database\Eloquent\Builder $query) => $query->whereNull('text->en')),
             ]);
     }
 
