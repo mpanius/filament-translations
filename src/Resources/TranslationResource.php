@@ -94,6 +94,10 @@ class TranslationResource extends Resource
                                 Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\Filter::make('no_eng')->label('Нет английского')->query(fn(\Illuminate\Database\Eloquent\Builder $query) => $query->whereNull('text->en')),
                 Tables\Filters\Filter::make('no_rus')->label('Нет русского перевода')->query(fn(\Illuminate\Database\Eloquent\Builder $query) => $query->whereNull('text->ru')),
+            ])
+            ->bulkActions([
+               Tables\Actions\RestoreBulkAction::make(),
+               Tables\Actions\DeleteBulkAction::make()
             ]);
     }
 
